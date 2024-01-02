@@ -1,17 +1,20 @@
 package web.controller;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserServiceImpl;
+
 
 @Controller
 @RequestMapping("/")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
@@ -36,7 +39,11 @@ public class UserController {
     }
 
     @PostMapping()
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") @Valid User user,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new";
+        }
         userService.addUser(user);
         return "redirect:/";
     }
@@ -47,7 +54,11 @@ public class UserController {
         return "edit";
     }
     @PostMapping("/{id}/save")
-    public String saveUser (@ModelAttribute("user") User user) {
+    public String saveUser (@ModelAttribute("user") @Valid User user,
+                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
         userService.editUserById(user);
         return "redirect:/";
     }

@@ -1,17 +1,28 @@
 package web.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
-@Table
+@Table(name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotEmpty (message = "Name cannot be empty")
+    @Pattern(regexp = "[a-zA-Z_0-9]+", message = "Name can contain only letters and/or numbers")
+    @Size(min = 1, max = 50, message = "Name should be between 1 and 50 characters")
     private String name;
+
+    @NotBlank(message = "Lastname cannot be empty")
+    @Pattern(regexp = "[a-zA-Z_0-9]+", message = "Lastname can contain only letters and/or numbers")
+    @Size(min = 1, max = 50, message = "Name should be between 1 and 50 characters")
     private String lastName;
+
+    @Min(value = 1900, message = "Not less than 1900")
+    @Max(value = 2005)
     private int yearOfBirth;
 
     public User() {
