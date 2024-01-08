@@ -31,8 +31,12 @@ import java.util.Properties;
 @PropertySource({"classpath:db.properties"})
 public class WebConfig implements WebMvcConfigurer {
 
+    private final Environment env;
+
     @Autowired
-    private Environment env;
+    public WebConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {

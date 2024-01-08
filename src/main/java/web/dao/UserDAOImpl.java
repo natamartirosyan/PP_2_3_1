@@ -1,39 +1,43 @@
 package web.dao;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 import web.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class UserDAOImpl implements UserDAO {
-    @PersistenceContext
+
     private EntityManager em;
 
-    //@Transactional
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    @Override
     public void addUser(User user) {
         em.persist(user);
     }
-    //@Transactional
+
     @Override
     public User findUser(int id) {
         return em.find(User.class, id);
     }
 
-    //@Transactional
+    @Override
     public void editUserById(User user) {
         em.merge(user);
     }
 
-    //@Transactional
+    @Override
     public void removeUserById(int id) {
         User user = em.find(User.class, id);
         em.remove(user);
     }
 
-    //@Transactional
+    @Override
     public List<User> getAllUsers() {
         return em.createQuery("from User", User.class).getResultList();
     }
