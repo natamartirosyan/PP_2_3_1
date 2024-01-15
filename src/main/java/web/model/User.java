@@ -2,6 +2,7 @@ package web.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -12,7 +13,7 @@ public class User {
     private int id;
 
     @Column(name = "firstName")
-    @NotEmpty (message = "Name cannot be empty")
+    @NotEmpty(message = "Name cannot be empty")
     @Pattern(regexp = "[a-zA-Z_0-9]+", message = "Name can contain only letters and/or numbers")
     @Size(min = 1, max = 50, message = "Name should be between 1 and 50 characters")
     private String name;
@@ -78,5 +79,18 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", yearOfBirth=" + yearOfBirth +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && yearOfBirth == user.yearOfBirth && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, yearOfBirth);
     }
 }

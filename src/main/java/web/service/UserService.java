@@ -9,7 +9,7 @@ public interface UserService {
 
     User findUser(int id);
 
-    void editUserById (User user);
+    void editUserById(User user);
 
     void removeUserById(int id);
 
